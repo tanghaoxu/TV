@@ -6,14 +6,14 @@ const REQUEST_HEADERS = {
 
 ;(async () => {
   let panel_result = {
-    title: '流媒体解锁检测',
+    title: '𝗦𝘁𝗿𝗲𝗮𝗺',
     content: '',
     icon: 'play.tv.fill',
-    'icon-color': '#FF2D55',
+    'icon-color': '#FF0097',
   }
   await Promise.all([check_netflix(), check_youtube_premium()])
     .then((result) => {
-      let content = result.join('\n')
+      let content = result.join('   ')
       panel_result['content'] = content
     })
     .finally(() => {
@@ -54,18 +54,18 @@ async function check_youtube_premium() {
     })
   }
 
-  let youtube_check_result = 'YouTube：'
+  let youtube_check_result = ''
 
   await inner_check()
     .then((code) => {
       if (code === 'Not Available') {
-        youtube_check_result += '不支持解锁'
+        youtube_check_result += '油管未解锁'
       } else {
-        youtube_check_result += '已解锁，区域：' + code.toUpperCase()
+        youtube_check_result += '油管解锁➟' + code.toUpperCase()
       }
     })
     .catch((error) => {
-      youtube_check_result += '检测失败，请刷新面板'
+      youtube_check_result += '检测失败'
     })
 
   return youtube_check_result
@@ -110,14 +110,14 @@ async function check_netflix() {
     })
   }
 
-  let netflix_check_result = 'Netflix：'
+  let netflix_check_result = ''
 
   await inner_check(81215567)
     .then((code) => {
       if (code === 'Not Found') {
         return inner_check(80018499)
       }
-      netflix_check_result += '已完整解锁，区域：' + code.toUpperCase()
+      netflix_check_result += '奈飞解锁➟' + code.toUpperCase()
       return Promise.reject('BreakSignal')
     })
     .then((code) => {
@@ -125,7 +125,7 @@ async function check_netflix() {
         return Promise.reject('Not Available')
       }
 
-      netflix_check_result += '仅解锁自制剧，区域：' + code.toUpperCase()
+      netflix_check_result += '奈飞自制➟' + code.toUpperCase()
       return Promise.reject('BreakSignal')
     })
     .catch((error) => {
@@ -133,10 +133,10 @@ async function check_netflix() {
         return
       }
       if (error === 'Not Available') {
-        netflix_check_result += '该节点不支持解锁'
+        netflix_check_result += '奈飞无法观看'
         return
       }
-      netflix_check_result += '检测失败，请刷新面板'
+      netflix_check_result += '检测失败'
     })
 
   return netflix_check_result
