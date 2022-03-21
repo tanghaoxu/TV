@@ -6,7 +6,7 @@ const REQUEST_HEADERS = {
 
 ;(async () => {
   let panel_result = {
-    title: 'Streaming MEDǐA',
+    title: 'Stěǎmǐng MěDǐA',
     content: '',
     icon: 'play.tv.fill',
     'icon-color': '#FF0097',
